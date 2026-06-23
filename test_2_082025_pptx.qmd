@@ -1,13 +1,8 @@
 ---
 title: "Foundations in Hypothesis Testing"
 author: "<br><br><span style='font-size:25px;'><strong>Lesley Chapman Hannah, Ph.D., M.S.</strong></span><br>College of Graduate Studies<br>Northeast Ohio Medical University"
-format:
-  revealjs:
-    theme: simple
-    slide-number: true
-    transition: fade
-    chalkboard: true
-    smaller: false
+format: pptx
+
 execute:
   echo: true
   warning: false
@@ -16,6 +11,7 @@ execute:
 
 ## Learning Objectives
 ::: {style="font-size:0.6em"}
+By the end of this lecture, students should be able to:
 
 - define **hypothesis testing** as a formal decision framework built on estimation
 - explain why the workflow begins with the **estimand**
