@@ -17,12 +17,10 @@ execute:
 ## Learning Objectives
 ::: {style="font-size:0.6em"}
 
-- define **hypothesis testing** as a formal decision framework built on estimation
-- explain why the workflow begins with the **estimand**
-- distinguish the roles of the **estimand**, **model**, **test statistic**, **uncertainty**, and **p-value**
-- identify when a mean difference, difference in proportions, odds ratio, or rate ratio is the primary target
-- interpret the p-value in context without treating it as the whole analysis
-- explain why effect size should be interpreted first, uncertainty second, and the p-value last
+- define hypothesis testing and its role in statistical inference
+- formulate null and alternative hypotheses
+- explain how test statistics and p-values are used to evaluate evidence against the null hypothesis
+- interpret hypothesis test results in the context of a scientific question
 :::
 ---
 
@@ -356,7 +354,6 @@ Examples include:
 | t statistic | population means with estimated variability |
 | chi-square statistic $\chi^2$ | categorical data and contingency tables |
 | F statistic | comparing variability across groups in ANOVA |
-| likelihood ratio statistic $G^2$ | comparing nested statistical models |
 
 :::
 
@@ -430,7 +427,7 @@ Interpretation:
 
 ::: {style="font-size:0.55em"}
 
-Suppose you have a dataset of 120 biomarker-positive cancer patients
+Suppose you have a dataset of 120  cancer patients
 
 The variable response is binary:
 
@@ -605,7 +602,7 @@ Suppose:
 
 $\alpha$: 0.05
 
-$\hat{p}$ = 0.64 [observed sample tumor response probability is 64%]
+$\hat{p}$ = 0.64 [$\leftarrow$ value collected from a previous study ]
 
 $p_0$ = 0.5
 
@@ -615,15 +612,7 @@ Calculate standard error:
 
 measure of how much the sample proportion would typically vary across repeated random samples when $p_0=0.50$
 
-```{r, echo=FALSE}
-p_hat <- 0.64
-p0 <- 0.50
-n <- 100
 
-se <- sqrt((p0 * (1 - p0)) / n)
-
-cat("Standard error =", se)
-```
 
 
 :::
@@ -651,13 +640,12 @@ n <- 100
 
 z <- (p_hat - p0) / sqrt((p0 * (1 - p0)) / n)
 
-cat("Z-score =", z, "\n",
-    "p-value =", 1 - pnorm(2.8))
+cat("Z-score =", z)
 ```
 
 - observed sample proportion is 2.8 standard errors above the null hypothesis value of 0.50 $\rightarrow$ evidence that the population response probability is greater than 50%
-- p-value is less than $\alpha = 0.05$ we reject $H_0$
-- sample provides evidence that the population tumor response probability is greater than 50%
+
+Next step: find p-value associated with test statistic
 :::
 
 ---
@@ -678,18 +666,18 @@ cat("Z-score =", z, "\n",
 In research example:
 
 $$
-p = \text{population probability of tumor response among biomarker-positive patients}
+p = \text{population probability of tumor response among cancer patients}
 $$
 :::
 
 ---
 
 
-### Visualizing the p-Value
+### Visualize the p-value
 
 ::: {style="font-size:0.5em"}
 
-```{r, echo=FALSE, fig.width=6, fig.height=4}
+```{r, echo=FALSE, fig.width=5, fig.height=4}
 # observed z statistic
 
 z_obs <- 2.8
@@ -756,11 +744,11 @@ Interpretation of regions:
 
 ---
 
-### Visualizing the p-Value
+### Calculate and Visualize the p-value
 
 ::: {style="font-size:0.4em"}
 
-```{r, echo=FALSE, fig.width=6, fig.height=4}
+```{r, echo=FALSE, fig.width=4, fig.height=2}
 # observed z statistic
 
 z_obs <- 2.8
@@ -813,182 +801,24 @@ plot
 
 **Plot Interpretation**
 
-Blue Line: critical value for $\alpha=0.05$
+Blue Line: critical value for $\alpha=0.05$ [`qnorm(0.95) = 1.645`]
 
 - standard normal distribution for a one-sided hypothesis test with: $\alpha=0.05$
-- z-score has 95% of the standard normal distribution below value: `qnorm(0.95) = 1.645`
 - identify cutoff where only 5% of the distribution lies to the right: $P(Z \geq 1.645) = 0.05$
-
-
-:::
-
----
-
-### Visualizing the p-Value
-
-::: {style="font-size:0.4em"}
-
-```{r, echo=FALSE, fig.width=4, fig.height=2}
-# observed z statistic
-
-z_obs <- 2.8
-
-# critical value for alpha = 0.05 (one-sided)
-z_crit <- qnorm(0.95)
-
-# standard normal distribution
-z_df <- tibble(
-  z = seq(-4, 4, length.out = 1000),
-  density = dnorm(z)
-)
-
-plot <- ggplot(z_df, aes(x = z, y = density)) +
-
-  geom_line(size = 1) +
-
-  # shaded p-value region
-  geom_area(
-    data = filter(z_df, z >= z_obs),
-    fill = "red",
-    alpha = 0.4
-  ) +
-
-  # observed z statistic
-  geom_vline(
-    xintercept = z_obs,
-    linetype = "dashed",
-    size = 1
-  ) +
-
-  # significance threshold
-  geom_vline(
-    xintercept = z_crit,
-    color = "blue",
-    linetype = "dotted",
-    size = 1
-  ) +
-
-  labs(
-    x = "z statistic under H0",
-    y = "Density"
-  ) +
-
-  theme_bw()
-
-plot
-```
-
-
-
-
-**Plot Interpretation**
-
-If the null hypothesis is true:
-
-- about 95% of z statistics fall below 1.645  
-- about 5% fall above 1.645 
-
-```{r}
-qnorm(0.95)
-```
-
-
-observed value falls in the upper tail of the null distribution
-
-- if the observed z statistic falls far into the right tail: evidence supports $H_A$
-
-- if the observed z statistic falls near the center: insufficient evidence against $H_0$
-
-- if the observed z statistic falls into the left tail  
-
-  → the data move in the opposite direction from the alternative hypothesis
-  → results do not provide evidence against $H_0$ in the direction required by the alternative hypothesis $H_A : p > 0.5$
+- right tailed p-value for z = 2.8: `1 - pnorm(2.8) = 0.0026`
+- p-value is the tail area under the null distribution beyond the observed test statistic
 
 :::
 
 ---
 
-### Visualizing the p-Value
-
-::: {style="font-size:0.4em"}
-
-```{r, echo=FALSE, fig.width=4, fig.height=2}
-# observed z statistic
-
-z_obs <- 2.8
-
-# critical value for alpha = 0.05 (one-sided)
-z_crit <- qnorm(0.95)
-
-# standard normal distribution
-z_df <- tibble(
-  z = seq(-4, 4, length.out = 1000),
-  density = dnorm(z)
-)
-
-plot <- ggplot(z_df, aes(x = z, y = density)) +
-
-  geom_line(size = 1) +
-
-  # shaded p-value region
-  geom_area(
-    data = filter(z_df, z >= z_obs),
-    fill = "red",
-    alpha = 0.4
-  ) +
-
-  # observed z statistic
-  geom_vline(
-    xintercept = z_obs,
-    linetype = "dashed",
-    size = 1
-  ) +
-
-  # significance threshold
-  geom_vline(
-    xintercept = z_crit,
-    color = "blue",
-    linetype = "dotted",
-    size = 1
-  ) +
-
-  labs(
-    x = "z statistic under H0",
-    y = "Density"
-  ) +
-
-  theme_bw()
-
-plot
-```
 
 
-**Plot Interpretation**
 
-If the null hypothesis is true:
-
-- about 95% of z statistics fall below 1.645  
-- about 5% fall above 1.645 
-
-```{r}
-qnorm(0.95)
-```
-
-
-**Interpretation**
-  
-red region represents the p-value: $P(Z \geq 2.8 \mid H_0)$
-
-
-- sample provides evidence against the null hypothesis  
-
-:::
-
----
 
 ### State the Statistical Conclusion
 
-::: {style="font-size:0.6em"}
+::: {style="font-size:0.5em"}
 
 **Step 9: state conclusion**
 
@@ -1036,7 +866,7 @@ Scientific interpretation includes:
 
 - evidence suggests that the targeted biomarker may be associated with increased tumor response probability in the population
 
-- among $n = 100$ biomarker-positive cancer patients, the observed tumor response proportion was substantially larger than what would typically be expected if the true population response probability were 50%
+- among $n = 100$  cancer patients, the observed tumor response proportion was substantially larger than what would typically be expected if the true population response probability were 50%
 
 - observed z statistic is $z \approx 2.8$ indicating that the sample response proportion was approximately 2.8 standard errors above the null response probability
 

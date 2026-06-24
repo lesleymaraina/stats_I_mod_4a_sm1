@@ -210,12 +210,10 @@
 <h2>Learning Objectives</h2>
 <div style="font-size:0.6em">
 <ul>
-<li>define <strong>hypothesis testing</strong> as a formal decision framework built on estimation</li>
-<li>explain why the workflow begins with the <strong>estimand</strong></li>
-<li>distinguish the roles of the <strong>estimand</strong>, <strong>model</strong>, <strong>test statistic</strong>, <strong>uncertainty</strong>, and <strong>p-value</strong></li>
-<li>identify when a mean difference, difference in proportions, odds ratio, or rate ratio is the primary target</li>
-<li>interpret the p-value in context without treating it as the whole analysis</li>
-<li>explain why effect size should be interpreted first, uncertainty second, and the p-value last</li>
+<li>define hypothesis testing and its role in statistical inference</li>
+<li>formulate null and alternative hypotheses</li>
+<li>explain how test statistics and p-values are used to evaluate evidence against the null hypothesis</li>
+<li>interpret hypothesis test results in the context of a scientific question</li>
 </ul>
 </div>
 </section>
@@ -513,10 +511,6 @@ p = \text{population probability of tumor response}
 <td>F statistic</td>
 <td>comparing variability across groups in ANOVA</td>
 </tr>
-<tr class="odd">
-<td>likelihood ratio statistic <span class="math inline">\(G^2\)</span></td>
-<td>comparing nested statistical models</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -580,7 +574,7 @@ p_0(1-p_0)
 
 <h3 id="hypothesis-test-for-tumor-response-probability">Hypothesis Test for Tumor Response Probability</h3>
 <div style="font-size:0.55em">
-<p>Suppose you have a dataset of 120 biomarker-positive cancer patients</p>
+<p>Suppose you have a dataset of 120 cancer patients</p>
 <p>The variable response is binary:</p>
 <p>1 = tumor response observed</p>
 <p>0 = tumor response not observed</p>
@@ -726,16 +720,11 @@ H_A: p &gt; 0.50
 </ul>
 <p>Suppose:</p>
 <p><span class="math inline">\(\alpha\)</span>: 0.05</p>
-<p><span class="math inline">\(\hat{p}\)</span> = 0.64 [observed sample tumor response probability is 64%]</p>
+<p><span class="math inline">\(\hat{p}\)</span> = 0.64 [<span class="math inline">\(\leftarrow\)</span> value collected from a previous study ]</p>
 <p><span class="math inline">\(p_0\)</span> = 0.5</p>
 <p>n = 100</p>
 <p>Calculate standard error:</p>
 <p>measure of how much the sample proportion would typically vary across repeated random samples when <span class="math inline">\(p_0=0.50\)</span></p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>Standard error = 0.05</code></pre>
-</div>
-</div>
 </div>
 </section>
 <section class="slide level2">
@@ -749,15 +738,13 @@ z=\frac{0.64-0.5}{\sqrt{\frac{0.5(1-0.5)}{100}}}
 \]</span></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Z-score = 2.8 
- p-value = 0.00255513</code></pre>
+<pre><code>Z-score = 2.8</code></pre>
 </div>
 </div>
 <ul>
 <li>observed sample proportion is 2.8 standard errors above the null hypothesis value of 0.50 <span class="math inline">\(\rightarrow\)</span> evidence that the population response probability is greater than 50%</li>
-<li>p-value is less than <span class="math inline">\(\alpha = 0.05\)</span> we reject <span class="math inline">\(H_0\)</span></li>
-<li>sample provides evidence that the population tumor response probability is greater than 50%</li>
 </ul>
+<p>Next step: find p-value associated with test statistic</p>
 </div>
 </section>
 <section class="slide level2">
@@ -773,19 +760,19 @@ z=\frac{0.64-0.5}{\sqrt{\frac{0.5(1-0.5)}{100}}}
 </ul>
 <p>In research example:</p>
 <p><span class="math display">\[
-p = \text{population probability of tumor response among biomarker-positive patients}
+p = \text{population probability of tumor response among cancer patients}
 \]</span></p>
 </div>
 </section>
 <section class="slide level2">
 
-<h3 id="visualizing-the-p-value">Visualizing the p-Value</h3>
+<h3 id="visualize-the-p-value">Visualize the p-value</h3>
 <div style="font-size:0.5em">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="test_2_082025_files/figure-revealjs/unnamed-chunk-6-1.png" width="576"></p>
+<p><img data-src="test_2_082025_files/figure-revealjs/unnamed-chunk-5-1.png" width="480"></p>
 </figure>
 </div>
 </div>
@@ -802,98 +789,31 @@ p = \text{population probability of tumor response among biomarker-positive pati
 </section>
 <section class="slide level2">
 
-<h3 id="visualizing-the-p-value-1">Visualizing the p-Value</h3>
+<h3 id="calculate-and-visualize-the-p-value">Calculate and Visualize the p-value</h3>
 <div style="font-size:0.4em">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="test_2_082025_files/figure-revealjs/unnamed-chunk-7-1.png" width="576"></p>
+<p><img data-src="test_2_082025_files/figure-revealjs/unnamed-chunk-6-1.png" width="384"></p>
 </figure>
 </div>
 </div>
 </div>
 <p><strong>Plot Interpretation</strong></p>
-<p>Blue Line: critical value for <span class="math inline">\(\alpha=0.05\)</span></p>
+<p>Blue Line: critical value for <span class="math inline">\(\alpha=0.05\)</span> [<code>qnorm(0.95) = 1.645</code>]</p>
 <ul>
 <li>standard normal distribution for a one-sided hypothesis test with: <span class="math inline">\(\alpha=0.05\)</span></li>
-<li>z-score has 95% of the standard normal distribution below value: <code>qnorm(0.95) = 1.645</code></li>
 <li>identify cutoff where only 5% of the distribution lies to the right: <span class="math inline">\(P(Z \geq 1.645) = 0.05\)</span></li>
-</ul>
-</div>
-</section>
-<section class="slide level2">
-
-<h3 id="visualizing-the-p-value-2">Visualizing the p-Value</h3>
-<div style="font-size:0.4em">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="test_2_082025_files/figure-revealjs/unnamed-chunk-8-1.png" width="384"></p>
-</figure>
-</div>
-</div>
-</div>
-<p><strong>Plot Interpretation</strong></p>
-<p>If the null hypothesis is true:</p>
-<ul>
-<li>about 95% of z statistics fall below 1.645<br>
-</li>
-<li>about 5% fall above 1.645</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">qnorm</span>(<span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.644854</code></pre>
-</div>
-</div>
-<p>observed value falls in the upper tail of the null distribution</p>
-<ul>
-<li><p>if the observed z statistic falls far into the right tail: evidence supports <span class="math inline">\(H_A\)</span></p></li>
-<li><p>if the observed z statistic falls near the center: insufficient evidence against <span class="math inline">\(H_0\)</span></p></li>
-<li><p>if the observed z statistic falls into the left tail</p>
-<p>→ the data move in the opposite direction from the alternative hypothesis → results do not provide evidence against <span class="math inline">\(H_0\)</span> in the direction required by the alternative hypothesis <span class="math inline">\(H_A : p &gt; 0.5\)</span></p></li>
-</ul>
-</div>
-</section>
-<section class="slide level2">
-
-<h3 id="visualizing-the-p-value-3">Visualizing the p-Value</h3>
-<div style="font-size:0.4em">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="test_2_082025_files/figure-revealjs/unnamed-chunk-10-1.png" width="384"></p>
-</figure>
-</div>
-</div>
-</div>
-<p><strong>Plot Interpretation</strong></p>
-<p>If the null hypothesis is true:</p>
-<ul>
-<li>about 95% of z statistics fall below 1.645<br>
-</li>
-<li>about 5% fall above 1.645</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">qnorm</span>(<span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.644854</code></pre>
-</div>
-</div>
-<p><strong>Interpretation</strong></p>
-<p>red region represents the p-value: <span class="math inline">\(P(Z \geq 2.8 \mid H_0)\)</span></p>
-<ul>
-<li>sample provides evidence against the null hypothesis</li>
+<li>right tailed p-value for z = 2.8: <code>1 - pnorm(2.8) = 0.0026</code></li>
+<li>p-value is the tail area under the null distribution beyond the observed test statistic</li>
 </ul>
 </div>
 </section>
 <section class="slide level2">
 
 <h3 id="state-the-statistical-conclusion">State the Statistical Conclusion</h3>
-<div style="font-size:0.6em">
+<div style="font-size:0.5em">
 <p><strong>Step 9: state conclusion</strong></p>
 <ul>
 <li>final step of hypothesis testing is making a statistical decision based on the observed evidence</li>
@@ -935,7 +855,7 @@ p = \text{population probability of tumor response among biomarker-positive pati
 <p><strong>Interpretation</strong>:</p>
 <ul>
 <li><p>evidence suggests that the targeted biomarker may be associated with increased tumor response probability in the population</p></li>
-<li><p>among <span class="math inline">\(n = 100\)</span> biomarker-positive cancer patients, the observed tumor response proportion was substantially larger than what would typically be expected if the true population response probability were 50%</p></li>
+<li><p>among <span class="math inline">\(n = 100\)</span> cancer patients, the observed tumor response proportion was substantially larger than what would typically be expected if the true population response probability were 50%</p></li>
 <li><p>observed z statistic is <span class="math inline">\(z \approx 2.8\)</span> indicating that the sample response proportion was approximately 2.8 standard errors above the null response probability</p></li>
 <li><p>p-value <span class="math inline">\(p \approx 0.0026\)</span> : result this extreme would be very unlikely under the null hypothesis</p></li>
 </ul>
